@@ -18,10 +18,11 @@
             "supportsTablet": true
         },
         "android": {
-        "adaptiveIcon": {
-            "foregroundImage": "./assets/adaptive-icon.png",
-            "backgroundColor": "#ffffff"
-        }
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/adaptive-icon.png",
+                "backgroundColor": "#ffffff"
+            },
+            "package": "com.cleidsonoliveira.drinkwater"
         },
         "web": {
             "favicon": "./assets/favicon.png"
@@ -29,6 +30,14 @@
         "plugins": [
             "expo-router"
         ],
-        "scheme": "drink-water"
+        "scheme": "drink-water",
+        "extra": {
+            "router": {
+                "origin": false
+            },
+            "eas": {
+                "projectId": "aaeb62e3-3bcd-424e-8cdc-9565302a496f"
+            }
+        }
     }
 }
