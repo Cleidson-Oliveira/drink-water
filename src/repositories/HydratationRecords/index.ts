@@ -1,6 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export interface THydrationRecord extends Number {}
+export interface THydrationRecord {
+    drinkTime: number
+    waterAmount: number
+}
 
 export interface THydrationRecords {
     [ dateIndentification: string ]: THydrationRecord[]
@@ -46,10 +49,9 @@ export class HydratationRecordsRepository {
         return hydratationRecords[dateIdentification];
     }
 
-    public async save () {
+    public async save (hydrationRecord: THydrationRecord) {
         
         const dateIdentification = this.dateIdentificationGenetator();
-        const hydrationRecord = Date.now();
 
         const hydratationRecords = await this.getAll();
         

@@ -1,7 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "../../components/button";
+import { HydratationRecordsProvider, useHydratationRecords } from "../../contexts/hydratationRecordsContext";
 
 export default function Settings () {
+
+    const {clearData} = useHydratationRecords()
 
     return (
         <View>
@@ -15,6 +18,12 @@ export default function Settings () {
                     <Button textContent="500" />
                 </View>
             </View>
+    
+            <View style={styles.configBox}>
+                <Text style={styles.configTitle}>Limpar dados</Text>
+                <Button textContent="Apagar dados" onPress={clearData} /> 
+            </View>
+            
         </View>
     )
 }
