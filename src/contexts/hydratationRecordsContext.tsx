@@ -1,16 +1,19 @@
-import { ReactNode, createContext, useState, useContext } from "react";
+import { ReactNode, createContext, useState, useContext, useCallback } from "react";
 import { HydratationRecordsRepository, THydrationRecord, THydrationRecords } from "../repositories/HydratationRecords";
 import { useFocusEffect } from "expo-router/src/useFocusEffect";
+import { SettingsRepository, TSettings } from "../repositories/settings";
 
 interface THydratationRecordsContext {
     hydratationRecords: THydrationRecords
     hydrationRecordsPerDay: number
     waterPerDrink: number
+    userGender: "male" | "female"
 
     clearData(): void
     drinkWater(): Promise<void>
     computeWaterDranktoday(): Promise<number>
     getHydratationRecordsTodayList(): Promise<THydrationRecord[]>
+    updateSettings(settings: Partial<TSettings>): void
 }
 
 interface THydratationRecordsProviderProps {
@@ -22,8 +25,13 @@ export const HydratationRecordsContext = createContext({} as THydratationRecords
 export function HydratationRecordsProvider ({children}: THydratationRecordsProviderProps) {
 
     const hydratationRecordsRepository = new HydratationRecordsRepository();
-    const hydrationRecordsPerDay = 2500;
-    const waterPerDrink = 200;
+    const settingsRepository = new SettingsRepository();
+    
+    const [ waterPerDrink, setWaterPerDrink ] = useState(200);
+    const [ userWeight, setUserWeight ] = useState(60);
+    const [ userGender, setUserGender ] = useState<"male" | "female">("male");
+
+    const hydrationRecordsPerDay = userWeight * (userGender === "male" ? 35 : 31);
     
     const [ hydratationRecords, setHydratationRecords ] = useState<THydrationRecords>({});
 
@@ -57,22 +65,41 @@ export function HydratationRecordsProvider ({children}: THydratationRecordsProvi
 
     const clearData = () => {
         hydratationRecordsRepository.clear();
+        setHydratationRecords({});
     }
 
-    useFocusEffect(() => {
+    const updateSettings = (settings: Partial<TSettings>) => {
+        settings.cupSize && setWaterPerDrink(settings.cupSize);
+        settings.gender && setUserGender(settings.gender);
+        settings.weight && setUserWeight(settings.weight);
+
+        settingsRepository.updateSettings(settings);
+    }
+
+    useFocusEffect(useCallback(() => {
         hydratationRecordsRepository.getAll()
         .then(setHydratationRecords)
         .catch(console.error)
-    })
+
+        settingsRepository.getSettings()
+        .then(data => {
+            setUserGender(data.gender);
+            setWaterPerDrink(data.cupSize);
+            setUserWeight(data.weight);
+        })
+        .catch(console.error)
+    }, []))
 
     return (
         <HydratationRecordsContext.Provider value={{
             hydratationRecords,
             hydrationRecordsPerDay,
             waterPerDrink,
+            userGender,
             getHydratationRecordsTodayList,
             computeWaterDranktoday,
             drinkWater,
+            updateSettings,
             clearData,
         }}>
             {children}

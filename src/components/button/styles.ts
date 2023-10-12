@@ -6,6 +6,11 @@ export const styles = StyleSheet.create({
         backgroundColor: "blue",
         borderRadius: 4,
     },
+    inactiveButton: {
+        padding: 16,
+        backgroundColor: "#88c",
+        borderRadius: 4,
+    },
     buttonTextContent: {
         color: "#ffffff",
         fontSize: 16,
