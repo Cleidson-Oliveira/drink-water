@@ -29,9 +29,6 @@ export function HydratationRecordList () {
                 ListEmptyComponent={() => (
                     <Text style={styles.listItemText}>Quando você beber água aparecerá aqui!</Text>
                 )}
-                ItemSeparatorComponent={() => (
-                    <View style={styles.separator} />
-                )}
             />
         </View>
     )
