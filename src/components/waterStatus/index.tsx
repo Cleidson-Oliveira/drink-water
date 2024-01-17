@@ -1,7 +1,7 @@
 import { Text, View } from "react-native";
 import { styles } from "./style";
 import { Button } from "../button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useHydratationRecords } from "../../contexts/hydratationRecordsContext";
 
 export function WaterStatus () {
@@ -27,11 +27,13 @@ export function WaterStatus () {
                 </View>
                 
                 <View style={[
-                    { width: `${
-                        hydrationRecordsToday > hydrationRecordsPerDay 
-                        ? 100
-                        : Math.round(hydrationRecordsToday * 100 / hydrationRecordsPerDay)
-                    }%` }, 
+                    { 
+                        width: `${
+                            hydrationRecordsToday > hydrationRecordsPerDay 
+                            ? 100
+                            : Math.round(hydrationRecordsToday * 100 / hydrationRecordsPerDay)
+                        }%`
+                    }, 
                     styles.waterProgress
                 ]}/>
             </View>

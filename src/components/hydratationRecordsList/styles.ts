@@ -12,6 +12,8 @@ export const styles = StyleSheet.create({
         color: "#fff"
     },
     listItem: {
+        flexDirection: "row",
+        justifyContent: "space-between",
         padding: 4,
     },
     listItemText: {

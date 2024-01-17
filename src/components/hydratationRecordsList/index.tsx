@@ -24,7 +24,7 @@ export function HydratationRecordList () {
             <FlatList
                 data={hydratationRecordToday}
                 renderItem={({item}) => (
-                    <HydratationRecordListItem drinkTime={item.drinkTime} />
+                    <HydratationRecordListItem drinkTime={item.drinkTime} waterAmount={item.waterAmount} />
                 )}
                 ListEmptyComponent={() => (
                     <Text style={styles.listItemText}>Quando você beber água aparecerá aqui!</Text>
@@ -34,12 +34,15 @@ export function HydratationRecordList () {
     )
 }
 
-function HydratationRecordListItem ({drinkTime}: {drinkTime: number}) {
+function HydratationRecordListItem ({drinkTime, waterAmount}: THydrationRecord) {
     const date = new Date(drinkTime);
     return (
         <View style={styles.listItem}>
             <Text style={styles.listItemText}>
                 {date.getHours().toString().padStart(2, "0")}:{date.getMinutes().toString().padStart(2, "0")}
+            </Text>
+            <Text style={styles.listItemText}>
+                {waterAmount} ml
             </Text>
         </View>
     )

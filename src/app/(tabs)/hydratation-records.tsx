@@ -21,7 +21,11 @@ export default function HydratationRecords () {
         for(var i = 0; i < 7; i++) {
             today.setHours(-i);
 
-            const title =`${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}`;
+            const day = today.getDate().toString().padStart(2, "0");
+            const month = (today.getMonth()+1).toString().padStart(2, "0");
+            const year = today.getFullYear();
+
+            const title =`${day}-${month}-${year}`;
 
             waterAmount.unshift(getDailyWater(hydratationRecords[title]));
         }
